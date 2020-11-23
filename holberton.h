@@ -20,7 +20,7 @@ typedef struct builtin
 } builtin;
 
 void start_loop(builtin *bt);
-int execute_command(char command, char* args, builtin *bt);
+int execute_command(char *command, char **args, builtin *bt);
 int check_builtin(char *str, builtin *bt);
 int equal_strings(char *s1, char *s2);
 int exit_sh(void);

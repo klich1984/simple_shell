@@ -1,4 +1,4 @@
-#include <holberton.h>
+#include "holberton.h"
 
 /**
 * concat_path - search
@@ -12,7 +12,7 @@ char *concat_path(char *command)
 	char *concat = NULL;
 	struct stat statbuf;
 	int command_size = 0, path_size = 0, paths_size = 0;
-	int i = 0, j = 0, aux = 0;
+	int aux = 0;
 
 	paths = divide_path("PATH");
 	if (paths == NULL)
@@ -60,7 +60,7 @@ char **divide_path(char *str)
 	char **PATH = NULL;
 	char **PATHS = NULL;
 	char **aux = NULL;
-	int i = 0, size = 0;
+	int size = 0;
 
 	_env = _getenv(str);
 	if (_env == NULL)

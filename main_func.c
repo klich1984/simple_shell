@@ -8,7 +8,7 @@
 * Return: integer
 */
 
-int execute_command(char command, char *args, builtin *bt)
+int execute_command(char *command, char **args, builtin *bt)
 {
 	int i = 0;
 
@@ -100,8 +100,7 @@ void start_loop(builtin *bt)
 	char *line = NULL;
 	char **arguments = NULL;
 	char *path = NULL;
-	int i;
-	int pid, status, pr = 0, path_status;
+	int pid, status, pr = 0;
 	struct stat statbuf;
 
 	while (1)

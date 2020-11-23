@@ -99,10 +99,7 @@ char **copydptr(char **dest, char **src, int size)
  */
 void concat_string(char *dest, char *src, int offset)
 {
-	int i = 0, dest_size = 0, src_size = 0;
-
-	dest_size = string_size(dest);
-	src_size = string_size(src);
+	int i = 0;
 
 	while (src[i] != '\0')
 	{
