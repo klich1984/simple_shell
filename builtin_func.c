@@ -50,7 +50,7 @@ char *_getenv(const char *name)
  */
 int exit_sh(void)
 {
-	return (0);
+	return (-1);
 }
 
 /**
@@ -106,7 +106,7 @@ int equal_strings(char *s1, char *s2)
  *  @bt: string to be compared
  *  Return: 0 if found a builtin -1 if not
  */
-int check_builtin(char *str, builtin *bt)
+builtin *check_builtin(char *str, builtin *bt)
 {
 	int i = 0;
 
@@ -114,9 +114,9 @@ int check_builtin(char *str, builtin *bt)
 	{
 		if (equal_strings(bt[i].command, str) == 0)
 		{
-			return (0);
+			return (&(bt[i]));
 		}
 		i++;
 	}
-	return (-1);
+	return (NULL);
 }

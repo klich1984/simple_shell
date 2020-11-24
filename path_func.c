@@ -8,27 +8,25 @@
 
 char *concat_path(char *command)
 {
-	char **paths = NULL;
-	char *concat = NULL;
+	char **paths = NULL, *concat = NULL;
 	struct stat statbuf;
-	int command_size = 0, path_size = 0, paths_size = 0;
-	int aux = 0;
+	int command_size = 0, path_size = 0, paths_size = 0, aux = 0;
 
 	paths = divide_path("PATH");
 	if (paths == NULL)
 		return (NULL);
 	paths_size = size_dptr(paths);
 	if (command)
-	command_size = string_size(command);
+		command_size = string_size(command);
 	while (aux < paths_size)
 	{
 		if (paths[aux])
-		path_size = string_size(paths[aux]);
+			path_size = string_size(paths[aux]);
 		concat = malloc((path_size + command_size + 2) * sizeof(char));
 		if (concat == NULL)
 		{
-		free_dptr(paths);
-		return (NULL);
+			free_dptr(paths);
+			return (NULL);
 		}
 		concat[0] = '\0';
 		concat_string(concat, paths[aux], 0);
@@ -38,8 +36,8 @@ char *concat_path(char *command)
 		concat[path_size + command_size + 1] = '\0';
 		if (stat(concat, &statbuf) == 0)
 		{
-		free_dptr(paths);
-		return (concat);
+			free_dptr(paths);
+			return (concat);
 		}
 		free(concat);
 		aux++;
