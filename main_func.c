@@ -185,11 +185,9 @@ void start_loop(builtin *bt, char *argv)
 
 		if (path == NULL)
 		{
-			free(arguments);
-			free(line);
+			free_pointers(NULL, arguments, line);
 			continue;
 		}
-
 		if (execute_command(path, arguments, bt) == -1)
 			exit(-1);
 		free_pointers(path, arguments, line);
