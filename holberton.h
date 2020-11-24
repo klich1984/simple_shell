@@ -6,22 +6,21 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/wait.h>
-
 /**
  *  struct builtin - builtins struct
  *  @command: command to execute
  *  @function: function that gets executed when that command is called
+ *	@type: type of process
  */
-
 typedef struct builtin
 {
+	int type;
 	char *command;
 	int (*function)(void);
 } builtin;
-
-void start_loop(builtin *bt);
+void start_loop(builtin *bt, char *);
 int execute_command(char *command, char **args, builtin *bt);
-int check_builtin(char *str, builtin *bt);
+builtin *check_builtin(char *str, builtin *bt);
 int equal_strings(char *s1, char *s2);
 int exit_sh(void);
 int print_env(void);
@@ -37,5 +36,9 @@ char **divide_line(char *line, char *delim);
 int _count_token(char *line, char *delim);
 char *prompt(char *text);
 int string_size(char *str);
-
+char *trans_arguments(char **args, builtin *bt, char *argv, int coun_loop);
+void free_pointers(char *path, char **arguments, char *line);
+char *trans_number(int number, int size);
+int count_digits(int number);
+void print_errors(char *arg, char *line, char *errorx, int count_errors, int);
 #endif
