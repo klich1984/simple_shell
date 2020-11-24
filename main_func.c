@@ -69,15 +69,17 @@ char *prompt(char *text)
 		perror("Prompt message can't be NULL");
 		return (NULL);
 	}
-	prompt_size = string_size(text);
-	/*
-	*       must use #include <unistd.h>
-	*/
-	if (write(STDOUT_FILENO, text, prompt_size) == -1)
+	if (isatty(STDIN_FILENO) == 1)
 	{
-		perror("t-sh");
+		prompt_size = string_size(text);
+		/*
+		*       must use #include <unistd.h>
+		*/
+		if (write(STDOUT_FILENO, text, prompt_size) == -1)
+		{
+			perror("t-sh");
+		}
 	}
-
 	if (getline(&line, &size, stdin) == -1)
 	{
 		free(line);
@@ -87,7 +89,7 @@ char *prompt(char *text)
 	{
 		if (line[i] == '\n' || line[i] == EOF)
 		{
-		line[i] = '\0';
+			line[i] = '\0';
 		}
 		i++;
 	}
@@ -172,7 +174,8 @@ void start_loop(builtin *bt, char *argv)
 		line = prompt("(&) ");
 		if (!line)
 		{
-			write(1, "\n", 1);
+			if (isatty(STDIN_FILENO) != 0)
+				write(1, "\n", 1);
 			exit(0);
 		} else if (string_size(line) == 0)
 		{
