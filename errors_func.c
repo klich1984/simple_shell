@@ -9,7 +9,7 @@
 */
 void free_pointers(char *path, char **arguments, char *line)
 {
-	if (path)
+	if (path != *arguments)
 		free(path);
 	if (arguments)
 		free(arguments);
