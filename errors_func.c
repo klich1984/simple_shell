@@ -33,7 +33,6 @@ char *trans_number(int number, int size)
 	ptr = malloc(size * sizeof(char) + 1);
 	if (ptr == NULL)
 	{
-		free(ptr);
 		return (NULL);
 	}
 	if (number == 0)
@@ -46,7 +45,6 @@ char *trans_number(int number, int size)
 	if (ptrRev == NULL)
 	{
 		free(ptr);
-		free(ptrRev);
 		return (NULL);
 	}
 	while (i < size)
@@ -100,4 +98,5 @@ void print_errors(char *arg, char *line, char *err, int count, int con)
 			write(STDERR_FILENO, line, size_line);
 			write(STDERR_FILENO, "\n", 1);
 		}
+		free(number_trans);
 }

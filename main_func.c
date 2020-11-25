@@ -179,7 +179,7 @@ void start_loop(builtin *bt, char *argv, char **env)
 			}
 			free(arguments);
 			free(line);
-			exit(-1);
+			exit(EXIT_SUCCESS);
 		}
 		if(line != path && path != arguments[0])
 		{
