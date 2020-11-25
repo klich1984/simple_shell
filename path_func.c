@@ -3,16 +3,17 @@
 /**
 * concat_path - search
 * @command: String to search
+* @env: environment
 * Return: Pointer to the string
 */
 
-char *concat_path(char *command)
+char *concat_path(char *command, char **env)
 {
 	char **paths = NULL, *concat = NULL;
 	struct stat statbuf;
 	int command_size = 0, path_size = 0, paths_size = 0, aux = 0;
 
-	paths = divide_path("PATH");
+	paths = divide_path("PATH", env);
 	if (paths == NULL)
 		return (NULL);
 	paths_size = size_dptr(paths);
@@ -49,10 +50,11 @@ char *concat_path(char *command)
 /**
 * divide_path - divide to path in tokens
 * @str: String to search
+* @env: environment
 * Return: Pointer to the string
 */
 
-char **divide_path(char *str)
+char **divide_path(char *str, char **env)
 {
 	char *_env = NULL;
 	char **PATH = NULL;
@@ -60,7 +62,7 @@ char **divide_path(char *str)
 	char **aux = NULL;
 	int size = 0;
 
-	_env = _getenv(str);
+	_env = _getenv(str, env);
 	if (_env == NULL)
 		return (NULL);
 	PATH = divide_line(_env, "=");

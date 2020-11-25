@@ -1,4 +1,5 @@
 #include "holberton.h"
+#define _GNU_SOURCE
 
 /**
 * execute_command - prompts a message and gets user input
@@ -72,9 +73,7 @@ char *prompt(char *text)
 	if (isatty(STDIN_FILENO) == 1)
 	{
 		prompt_size = string_size(text);
-		/*
-		*       must use #include <unistd.h>
-		*/
+
 		if (write(STDOUT_FILENO, text, prompt_size) == -1)
 		{
 			perror("t-sh");
@@ -100,10 +99,11 @@ char *prompt(char *text)
 * main - main function
 * @argc: amount of arguments
 * @argv: arguments
+* @env: environment
 * Return: 0 always
 */
 
-int main(int argc, char **argv)
+int main(int argc, char **argv, char **env)
 {
 	builtin bt[] = {
 		{0, "env", print_env},
@@ -117,42 +117,44 @@ int main(int argc, char **argv)
 		return (-1);
 	}
 
-	start_loop(bt, argv[0]);
+	start_loop(bt, argv[0], env);
 	return (0);
 }
 
 /**
 * trans_arguments - transforms the arguments
-* @args: arguments
+* @ac: arguments
 * @bt: builtin list
-* @argv: name of the program
-* @coun_loop: amount of loops
+* @av: name of the program
+* @c: amount of loops
+* @env: environment
 * Return: path to the command
 */
-char *trans_arguments(char **args, builtin *bt, char *argv, int coun_loop)
+char *trans_arguments(char **ac, builtin *bt, char *av, int c, char **env)
 {
 	char *aux = NULL;
 	struct stat statbuf;
 
-	if (check_builtin(args[0], bt) == NULL)
+	if (check_builtin(ac[0], bt) == NULL)
 	{
-		if (stat(args[0], &statbuf) == -1)
+		if (stat(ac[0], &statbuf) == -1)
 		{
-			aux = concat_path(args[0]);
+			aux = concat_path(ac[0], env);
 			if (aux ==  NULL)
 			{
-				print_errors(argv, args[0], "not found\n", coun_loop, 0);
+				print_errors(av, ac[0], "not found\n", c, 0);
+				free(aux);
 				return (NULL);
 			}
 		} else
-			aux = args[0];
+			aux = ac[0];
 	} else
 	{
-		if (size_dptr(args) > 1)
+		if (size_dptr(ac) > 1)
 		{
 			return (NULL);
 		}
-		aux = args[0];
+		aux = ac[0];
 	}
 	return (aux);
 }
@@ -161,10 +163,11 @@ char *trans_arguments(char **args, builtin *bt, char *argv, int coun_loop)
 * start_loop - starts the inifinite loop
 * @bt: struct whit arguments builtin
 * @argv: name of the program
+* @env: environment
 * Return: Noting
 */
 
-void start_loop(builtin *bt, char *argv)
+void start_loop(builtin *bt, char *argv, char **env)
 {
 	int coun_loop = 0;
 	char *line = NULL, **arguments = NULL, *path = NULL;
@@ -184,15 +187,18 @@ void start_loop(builtin *bt, char *argv)
 		}
 		arguments = divide_line(line, " ");
 
-		path = trans_arguments(arguments, bt, argv, coun_loop);
+		path = trans_arguments(arguments, bt, argv, coun_loop, env);
 
 		if (path == NULL)
 		{
-			free_pointers(NULL, arguments, line);
+			free_pointers(path, arguments, line);
 			continue;
 		}
 		if (execute_command(path, arguments, bt) == -1)
+		{
+			free_pointers(path, arguments, line);
 			exit(-1);
+		}
 		free_pointers(path, arguments, line);
 	}
 }

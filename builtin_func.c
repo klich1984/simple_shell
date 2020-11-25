@@ -3,16 +3,17 @@
 /**
  *  _getenv - search string
  *  @name: String to search
+ *	@env: environment
  *  Return: Pointer to the string
  */
-char *_getenv(const char *name)
+char *_getenv(const char *name, char **env)
 {
 	char *ptr = NULL;
 	char **list = NULL;
 	int size = 0;
 	int i = 0, j = 0;
 
-	list = __environ;
+	list = env;
 	for (i = 0; list[i] != NULL; i++)
 	{
 		for (j = 0; name[j] == list[i][j]; j++)
