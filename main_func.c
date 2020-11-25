@@ -17,7 +17,7 @@ int execute_command(char *command, char **args, builtin *bt)
 	bt_found = check_builtin(command, bt);
 
 	if (bt_found != NULL)
-		return(bt_found->function());
+		return (bt_found->function());
 
 	pid = fork();
 	if (pid == 0)
@@ -173,15 +173,14 @@ void start_loop(builtin *bt, char *argv, char **env)
 		}
 		if (execute_command(path, arguments, bt) == -1)
 		{
-			if(line != path && path != arguments[0])
-			{
+			if (line != path && path != arguments[0])
 				free(path);
-			}
+
 			free(arguments);
 			free(line);
 			exit(EXIT_SUCCESS);
 		}
-		if(line != path && path != arguments[0])
+		if (line != path && path != arguments[0])
 		{
 			free(path);
 		}
