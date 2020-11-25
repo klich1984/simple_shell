@@ -1,13 +1,12 @@
 #include "holberton.h"
-
 /**
 * concat_path - search
 * @command: String to search
 * @env: environment
+* @name: program name
 * Return: Pointer to the string
 */
-
-char *concat_path(char *command, char **env)
+char *concat_path(char *command, char **env, char *name)
 {
 	char **paths = NULL, *concat = NULL;
 	struct stat statbuf;
@@ -15,7 +14,10 @@ char *concat_path(char *command, char **env)
 
 	paths = divide_path("PATH", env);
 	if (paths == NULL)
-		return (NULL);
+	{
+		perror(name);
+		return ("A");
+	}
 	paths_size = size_dptr(paths);
 	if (command)
 		command_size = string_size(command);

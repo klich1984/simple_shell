@@ -1,6 +1,6 @@
 #include "holberton.h"
 #define _GNU_SOURCE
-
+#include <errno.h>
 /**
 * execute_command - prompts a message and gets user input
 * @command: comand
@@ -8,17 +8,13 @@
 * @bt: list_builtin
 * Return: integer
 */
-
 int execute_command(char *command, char **args, builtin *bt)
 {
 	builtin *bt_found = NULL;
 	int pid = 0, status;
-
 	bt_found = check_builtin(command, bt);
-
 	if (bt_found != NULL)
 		return (bt_found->function());
-
 	pid = fork();
 	if (pid == 0)
 	{
@@ -29,21 +25,18 @@ int execute_command(char *command, char **args, builtin *bt)
 	}
 	else
 		wait(&status);
-	return (0);
+	return (1);
 }
-
 /**
 * prompt - prompts a message and gets user input
 * @text: text to be displayed as prompt
 * Return: arguments as input recieved
 */
-
 char *prompt(char *text)
 {
 	char *line = NULL;
 	size_t size = 0;
 	int prompt_size = 0, i = 0;
-
 	if (!text)
 	{
 		perror("Prompt message can't be NULL");
@@ -52,7 +45,6 @@ char *prompt(char *text)
 	if (isatty(STDIN_FILENO) == 1)
 	{
 		prompt_size = string_size(text);
-
 		if (write(STDOUT_FILENO, text, prompt_size) == -1)
 		{
 			perror("t-sh");
@@ -73,7 +65,6 @@ char *prompt(char *text)
 	}
 	return (line);
 }
-
 /**
 * main - main function
 * @argc: amount of arguments
@@ -81,7 +72,6 @@ char *prompt(char *text)
 * @env: environment
 * Return: 0 always
 */
-
 int main(int argc, char **argv, char **env)
 {
 	builtin bt[] = {
@@ -89,17 +79,14 @@ int main(int argc, char **argv, char **env)
 		{1, "exit", exit_sh},
 		{-1, NULL, NULL}
 	};
-
 	if (argc > 1)
 	{
 		print_errors(argv[0], argv[1], "Can't open ", 0, 1);
 		return (-1);
 	}
-
 	start_loop(bt, argv[0], env);
 	return (0);
 }
-
 /**
 * trans_arguments - transforms the arguments
 * @ac: arguments
@@ -113,15 +100,17 @@ char *trans_arguments(char **ac, builtin *bt, char *av, int c, char **env)
 {
 	char *aux = NULL;
 	struct stat statbuf;
-
 	if (check_builtin(ac[0], bt) == NULL)
 	{
 		if (stat(ac[0], &statbuf) == -1)
 		{
-			aux = concat_path(ac[0], env);
+			aux = concat_path(ac[0], env, av);
 			if (aux ==  NULL)
 			{
 				print_errors(av, ac[0], "not found\n", c, 0);
+				return (NULL);
+			} else if (*aux == 'A')
+			{
 				return (NULL);
 			}
 		} else
@@ -136,7 +125,6 @@ char *trans_arguments(char **ac, builtin *bt, char *av, int c, char **env)
 	}
 	return (aux);
 }
-
 /**
 * start_loop - starts the inifinite loop
 * @bt: struct whit arguments builtin
@@ -144,12 +132,10 @@ char *trans_arguments(char **ac, builtin *bt, char *av, int c, char **env)
 * @env: environment
 * Return: Noting
 */
-
 void start_loop(builtin *bt, char *argv, char **env)
 {
 	int coun_loop = 0;
 	char *line = NULL, **arguments = NULL, *path = NULL;
-
 	while (++coun_loop)
 	{
 		line = prompt("(&) ");
@@ -175,7 +161,6 @@ void start_loop(builtin *bt, char *argv, char **env)
 		{
 			if (line != path && path != arguments[0])
 				free(path);
-
 			free(arguments);
 			free(line);
 			exit(EXIT_SUCCESS);

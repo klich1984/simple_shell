@@ -24,7 +24,7 @@ builtin *check_builtin(char *str, builtin *bt);
 int equal_strings(char *s1, char *s2);
 int exit_sh(void);
 int print_env(void);
-char *concat_path(char *command, char **);
+char *concat_path(char *command, char **, char *);
 void concat_string(char *dest, char *src, int offset);
 char **divide_path(char *str, char **);
 char **copydptr(char **dest, char **src, int size);
@@ -40,5 +40,4 @@ char *trans_arguments(char **, builtin *, char *, int, char **);
 char *trans_number(int number, int size);
 int count_digits(int number);
 void print_errors(char *arg, char *line, char *errorx, int count_errors, int);
-
 #endif
