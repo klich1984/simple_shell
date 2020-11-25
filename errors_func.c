@@ -1,23 +1,6 @@
 #include "holberton.h"
 
 /**
-* free_pointers - frees pointers
-* @path: pointer to free
-* @arguments: pointer to free
-* @line: pointer to free
-* Return: void
-*/
-void free_pointers(char *path, char **arguments, char *line)
-{
-	if (path != *arguments && path)
-		free(path);
-	if (arguments)
-		free(arguments);
-	if (line)
-		free(line);
-}
-
-/**
  * count_digits - Counter arrays
  * @number: value have counted
  * Return: size

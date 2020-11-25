@@ -56,9 +56,7 @@ char *concat_path(char *command, char **env)
 
 char **divide_path(char *str, char **env)
 {
-	char *_env = NULL;
-	char **PATH = NULL;
-	char **PATHS = NULL;
+	char *_env = NULL, **PATH = NULL, **PATHS = NULL;
 	char **aux = NULL;
 	int size = 0;
 
@@ -127,7 +125,6 @@ char **divide_line(char *line, char *delim)
 	int i = 0, j = 0, coun_tokens = 0;
 
 	coun_tokens = _count_token(line, delim);
-	i = 0;
 	tokens = malloc(sizeof(char *) * (coun_tokens + 1));
 	if (tokens == NULL)
 		return (NULL);
@@ -135,29 +132,29 @@ char **divide_line(char *line, char *delim)
 	{
 		if (i == 0 && line[i] == ' ')
 		{
-		while (line[i + 1] == ' ' && j == 0)
+			while (line[i + 1] == ' ' && j == 0)
+				i++;
 			i++;
-		i++;
-		tokens[j] = line + i;
-		j++;
+			tokens[j] = line + i;
+			j++;
 		}
 		if (i == 0 && line[i] != ' ')
 		{
-		tokens[j] = line;
-		j++;
+			tokens[j] = line;
+			j++;
 		}
 		while (line[i + 1] == *delim || line[i + 1] == ' ')
 		{
-		i++;
-		line[i] = '\0';
-		while (line[i + 1] == ' ')
-		{
 			i++;
 			line[i] = '\0';
-		}
-		i++;
-		tokens[j] = line + i;
-		j++;
+			while (line[i + 1] == ' ')
+			{
+				i++;
+				line[i] = '\0';
+			}
+			i++;
+			tokens[j] = line + i;
+			j++;
 		}
 		i++;
 	}

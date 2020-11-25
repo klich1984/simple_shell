@@ -17,34 +17,13 @@ int execute_command(char *command, char **args, builtin *bt)
 	bt_found = check_builtin(command, bt);
 
 	if (bt_found != NULL)
-	{
-		if (bt_found->type == 0)
-		{
-			pid = fork();
-
-			if (pid == 0)
-			{
-				bt_found->function();
-				free_pointers(command, args, NULL);
-				exit(1);
-			}
-			else
-				wait(&status);
-		} else
-		{
-			free_pointers(command, args, NULL);
-			return (bt_found->function());
-		}
-		return (0);
-	}
+		return(bt_found->function());
 
 	pid = fork();
-
 	if (pid == 0)
 	{
 		if (execve(command, args, __environ) == -1)
 		{
-			free_pointers(command, args, NULL);
 			return (-1);
 		}
 	}
@@ -143,7 +122,6 @@ char *trans_arguments(char **ac, builtin *bt, char *av, int c, char **env)
 			if (aux ==  NULL)
 			{
 				print_errors(av, ac[0], "not found\n", c, 0);
-				free(aux);
 				return (NULL);
 			}
 		} else
@@ -186,19 +164,28 @@ void start_loop(builtin *bt, char *argv, char **env)
 			continue;
 		}
 		arguments = divide_line(line, " ");
-
 		path = trans_arguments(arguments, bt, argv, coun_loop, env);
-
 		if (path == NULL)
 		{
-			free_pointers(path, arguments, line);
+			free(arguments);
+			free(line);
 			continue;
 		}
 		if (execute_command(path, arguments, bt) == -1)
 		{
-			free_pointers(path, arguments, line);
+			if(line != path && path != arguments[0])
+			{
+				free(path);
+			}
+			free(arguments);
+			free(line);
 			exit(-1);
 		}
-		free_pointers(path, arguments, line);
+		if(line != path && path != arguments[0])
+		{
+			free(path);
+		}
+		free(arguments);
+		free(line);
 	}
 }
