@@ -1,0 +1,167 @@
+.\" This manual is created for Holbertonn's mini_shell
+.\" project which consists of developing a function
+.\" similar to the shell sh of Linux
+.\" with some of its features
+.Dd November 25, 2020
+.Os
+.Dt DASH 1
+.Sh NAME
+.Nm simple_shell
+.Nd command interpreter (shell)
+.Sh SYNOPSIS
+.Nm
+.Bk -words
+.Op options
+.Sh DESCRIPTION
+.Nm
+is a program that allows to execute commands read from the standard input or from a file, processing
+the orders given to you. The commands that can be invoked from the
+.Nm
+can be classified as internal (they actually correspond to orders interpreted by the
+.Nm
+) and external (corresponds to executable files external to
+.Nm
+)
+.Ss Search and Execution
+There are three types of commands: shell functions, builtin commands, and
+normal programs -- and the command is searched for (by name) in that order.
+They each are executed in a different way.
+.Pp
+When a shell function is executed, all of the shell positional parameters
+(except $0, which remains unchanged) are set to the arguments of the shell
+function.
+The variables which are explicitly placed in the environment of
+the command (by placing assignments to them before the function name) are
+made local to the function and are set to the values given.
+Then the command given in the function definition is executed.
+The positional parameters are restored to their original values
+when the command completes.
+This all occurs within the current shell.
+.Pp
+Shell builtins are executed internally to the shell, without spawning a
+new process.
+.Pp
+Otherwise, if the command name doesn't match a function or builtin, the
+command is searched for as a normal program in the file system (as
+described in the next section).
+When a normal program is executed, the shell runs the program,
+passing the arguments and the environment to the program.
+If the program is not a normal executable file (i.e., if it does
+not begin with the "magic number" whose
+.Tn ASCII
+representation is "#!", so
+.Xr execve 2
+returns
+.Er ENOEXEC
+then) the shell will interpret the program in a subshell.
+The child shell will reinitialize itself in this case,
+so that the effect will be as if a
+new shell had been invoked to handle the ad-hoc shell script, except that
+the location of hashed commands located in the parent shell will be
+remembered by the child.
+.Pp
+.Ss Path Search
+When locating a command, the shell first looks to see if it has a shell
+function by that name.
+Then it looks for a builtin command by that name.
+If a builtin command is not found, one of two things happen:
+.Bl -enum
+.It
+Command names containing a slash are simply executed without performing
+any searches.
+.It
+The shell searches each entry in
+.Ev PATH
+in turn for the command.
+The value of the
+.Ev PATH
+variable should be a series of entries separated by colons.
+Each entry consists of a directory name.
+The current directory may be indicated
+implicitly by an empty directory name, or explicitly by a single period.
+.El
+.Ss Command Exit Status
+Each command has an exit status that can influence the behaviour
+of other shell commands.
+The paradigm is that a command exits
+with zero for normal or success, and non-zero for failure,
+error, or a false indication.
+The man page for each command
+should indicate the various exit codes and what they mean.
+Additionally, the builtin commands return exit codes, as does
+an executed shell function.
+.Pp
+If a command consists entirely of variable assignments then the
+exit status of the command is that of the last command substitution
+if any, otherwise 0.
+.Ss Builtins
+This section lists the builtin commands which are builtin because they
+need to perform some operation that can't be performed by a separate
+process.
+In addition to these, there are several other commands that may
+be builtin for efficiency (e.g.
+.Xr printf 1 ,
+.Xr echo 1 ,
+.Xr test 1 ,
+etc).
+.Ss exit
+.Op exit
+.br
+Terminate the shell process.
+If exit is given it is used as the exit status of the shell; otherwise the
+exit status of the preceding command is used.
+.Ss environment
+.Op env
+.br
+Print the VARIABLE environment
+.Sh EXIT STATUS
+Errors that are detected by the shell, such as a syntax error, will cause the
+shell to exit with a non-zero exit status.
+If the shell is not an
+interactive shell, the execution of the shell file will be aborted.
+Otherwise
+the shell will return the exit status of the last command executed, or
+if the exit builtin is used with a numeric argument, it will return the
+argument.
+.Sh HISTORY
+.Nm
+is a project developed to emulate the linux shell (sh) for learning method in lenjuague c, some
+conditions were handled for its elaboration and it was only allowed to use the following functions of c.
+.Bd -literal -offset indent
+access
+chdir
+close
+closedir
+execve
+exit
+_exit
+fflush
+fork
+free
+getcwd
+getline
+getpid
+isatty
+kill
+malloc
+open
+opendir
+perror
+read
+readdir
+signal
+stat
+lstat
+fstat
+strtok
+wait
+waitpid
+wait3
+wait4
+write
+.Sh BUGS
+If there is a debug in the print whit
+.BR
+.Nm
+, please contact
+juan.montoya@holbertonschool.com or carlos-alberto.usuga-martinez@holbertonschool.com
