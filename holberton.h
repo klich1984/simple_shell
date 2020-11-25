@@ -18,27 +18,28 @@ typedef struct builtin
 	char *command;
 	int (*function)(void);
 } builtin;
-void start_loop(builtin *bt, char *);
+void start_loop(builtin *bt, char *, char **);
 int execute_command(char *command, char **args, builtin *bt);
 builtin *check_builtin(char *str, builtin *bt);
 int equal_strings(char *s1, char *s2);
 int exit_sh(void);
 int print_env(void);
-char *concat_path(char *command);
+char *concat_path(char *command, char **);
 void concat_string(char *dest, char *src, int offset);
-char **divide_path(char *str);
+char **divide_path(char *str, char **);
 char **copydptr(char **dest, char **src, int size);
 void free_dptr(char **ptr);
 int size_dptr(char **ptr);
-char *_getenv(const char *name);
+char *_getenv(const char *name, char **);
 char *_strcpy(char *dest, char *src);
 char **divide_line(char *line, char *delim);
 int _count_token(char *line, char *delim);
 char *prompt(char *text);
 int string_size(char *str);
-char *trans_arguments(char **args, builtin *bt, char *argv, int coun_loop);
+char *trans_arguments(char **, builtin *, char *, int, char **);
 void free_pointers(char *path, char **arguments, char *line);
 char *trans_number(int number, int size);
 int count_digits(int number);
 void print_errors(char *arg, char *line, char *errorx, int count_errors, int);
+
 #endif
