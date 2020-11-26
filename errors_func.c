@@ -118,3 +118,16 @@ void print_errdir(char *arg, char *line)
 	write(STDERR_FILENO, line, size_coun_err);
 	write(STDERR_FILENO, "\n", 1);
 }
+
+/**
+* sigintHandler - handler for the ctrlc
+* @sig_num: struct whit arguments builtin
+* Return: Noting
+*/
+void sigintHandler(int sig_num)
+{
+	signal(sig_num, SIG_IGN);
+	write(STDOUT_FILENO, "\n", 1);
+	write(STDOUT_FILENO, "(&) ", 4);
+	signal(SIGINT, sigintHandler);
+}
