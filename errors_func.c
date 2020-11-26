@@ -100,3 +100,21 @@ void print_errors(char *arg, char *line, char *err, int count, int con)
 		}
 		free(number_trans);
 }
+
+/**
+ * print_errdir - Print errors
+ * @arg: pointer pos1
+ * @line: pointer pos2
+ * Return: Noting
+ */
+void print_errdir(char *arg, char *line)
+{
+	int size_coun_err = 0, size_arg = 0;
+
+	size_arg = string_size(arg);
+	size_coun_err = string_size(line);
+	write(STDERR_FILENO, arg, size_arg);
+	write(STDERR_FILENO, ": ", 2);
+	write(STDERR_FILENO, line, size_coun_err);
+	write(STDERR_FILENO, "\n", 1);
+}

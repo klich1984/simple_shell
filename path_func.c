@@ -6,7 +6,7 @@
 * @name: program name
 * Return: Pointer to the string
 */
-char *concat_path(char *command, char **env, char *name)
+char *concat_path(char *command, char **env)
 {
 	char **paths = NULL, *concat = NULL;
 	struct stat statbuf;
@@ -15,7 +15,6 @@ char *concat_path(char *command, char **env, char *name)
 	paths = divide_path("PATH", env);
 	if (paths == NULL)
 	{
-		perror(name);
 		return ("A");
 	}
 	paths_size = size_dptr(paths);
@@ -72,7 +71,7 @@ char **divide_path(char *str, char **env)
 		return (NULL);
 	}
 	PATHS = divide_line(PATH[1], ":");
-	if (!PATHS)
+	if (!PATHS || PATHS[0] == NULL)
 	{
 		free(PATH);
 		free(_env);

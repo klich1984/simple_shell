@@ -107,13 +107,14 @@ char *trans_arguments(char **ac, builtin *bt, char *av, int c, char **env)
 	{
 		if (stat(ac[0], &statbuf) == -1)
 		{
-			aux = concat_path(ac[0], env, av);
+			aux = concat_path(ac[0], env);
 			if (aux ==  NULL)
 			{
 				print_errors(av, ac[0], "not found\n", c, 0);
 				return (NULL);
 			} else if (*aux == 'A')
 			{
+				print_errdir(av, "No such file or directory");
 				return (NULL);
 			}
 		} else
