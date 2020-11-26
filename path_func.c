@@ -3,7 +3,6 @@
 * concat_path - search
 * @command: String to search
 * @env: environment
-* @name: program name
 * Return: Pointer to the string
 */
 char *concat_path(char *command, char **env)
