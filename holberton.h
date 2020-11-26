@@ -30,6 +30,7 @@ char **divide_path(char *str, char **);
 char **copydptr(char **dest, char **src, int size);
 void free_dptr(char **ptr);
 int size_dptr(char **ptr);
+void sigintHandler(int sig_num);
 char *_getenv(const char *name, char **);
 char *_strcpy(char *dest, char *src);
 char **divide_line(char *line, char *delim);

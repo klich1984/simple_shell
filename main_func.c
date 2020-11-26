@@ -1,6 +1,8 @@
 #include "holberton.h"
 #define _GNU_SOURCE
 #include <errno.h>
+#include <signal.h>
+
 /**
 * execute_command - prompts a message and gets user input
 * @command: comand
@@ -84,6 +86,7 @@ int main(int argc, char **argv, char **env)
 		print_errors(argv[0], argv[1], "Can't open ", 0, 1);
 		return (-1);
 	}
+	signal(SIGINT, sigintHandler);
 	start_loop(bt, argv[0], env);
 	return (0);
 }
@@ -114,7 +117,9 @@ char *trans_arguments(char **ac, builtin *bt, char *av, int c, char **env)
 				return (NULL);
 			}
 		} else
+		{
 			aux = ac[0];
+		}
 	} else
 	{
 		if (size_dptr(ac) > 1)
@@ -125,6 +130,20 @@ char *trans_arguments(char **ac, builtin *bt, char *av, int c, char **env)
 	}
 	return (aux);
 }
+
+/**
+* sigintHandler - handler for the ctrlc
+* @sig_num: struct whit arguments builtin
+* Return: Noting
+*/
+void sigintHandler(int sig_num)
+{
+	signal(sig_num, SIG_IGN);
+	write(STDOUT_FILENO, "\n", 1);
+	write(STDOUT_FILENO, "(&) ", 4);
+	signal(SIGINT, sigintHandler);
+}
+
 /**
 * start_loop - starts the inifinite loop
 * @bt: struct whit arguments builtin
@@ -136,13 +155,14 @@ void start_loop(builtin *bt, char *argv, char **env)
 {
 	int coun_loop = 0;
 	char *line = NULL, **arguments = NULL, *path = NULL;
+
 	while (++coun_loop)
 	{
 		line = prompt("(&) ");
 		if (!line)
 		{
 			if (isatty(STDIN_FILENO) != 0)
-				write(1, "\n", 1);
+				write(STDOUT_FILENO, "\n", 1);
 			exit(0);
 		} else if (string_size(line) == 0)
 		{
