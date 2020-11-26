@@ -37,6 +37,7 @@ char **divide_line(char *line, char *delim);
 int _count_token(char *line, char *delim);
 char *prompt(char *text);
 int string_size(char *str);
+void free_pointers(char *line, char *path, char **arguments);
 char *trans_arguments(char **, builtin *, char *, int, char **);
 char *trans_number(int number, int size);
 int count_digits(int number);

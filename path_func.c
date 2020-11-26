@@ -155,8 +155,7 @@ char **divide_line(char *line, char *delim)
 				line[i] = '\0';
 			}
 			i++;
-			tokens[j] = line + i;
-			j++;
+			tokens[j++] = line + i;
 		}
 		i++;
 	}
