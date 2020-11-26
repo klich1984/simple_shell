@@ -14,6 +14,7 @@ int execute_command(char *command, char **args, builtin *bt)
 {
 	builtin *bt_found = NULL;
 	int pid = 0, status;
+
 	bt_found = check_builtin(command, bt);
 	if (bt_found != NULL)
 		return (bt_found->function());
@@ -39,6 +40,7 @@ char *prompt(char *text)
 	char *line = NULL;
 	size_t size = 0;
 	int prompt_size = 0, i = 0;
+
 	if (!text)
 	{
 		perror("Prompt message can't be NULL");
@@ -103,6 +105,7 @@ char *trans_arguments(char **ac, builtin *bt, char *av, int c, char **env)
 {
 	char *aux = NULL;
 	struct stat statbuf;
+
 	if (check_builtin(ac[0], bt) == NULL)
 	{
 		if (stat(ac[0], &statbuf) == -1)
@@ -130,19 +133,6 @@ char *trans_arguments(char **ac, builtin *bt, char *av, int c, char **env)
 		aux = ac[0];
 	}
 	return (aux);
-}
-
-/**
-* sigintHandler - handler for the ctrlc
-* @sig_num: struct whit arguments builtin
-* Return: Noting
-*/
-void sigintHandler(int sig_num)
-{
-	signal(sig_num, SIG_IGN);
-	write(STDOUT_FILENO, "\n", 1);
-	write(STDOUT_FILENO, "(&) ", 4);
-	signal(SIGINT, sigintHandler);
 }
 
 /**
