@@ -126,6 +126,8 @@ char **divide_line(char *line, char *delim)
 	int i = 0, j = 0, coun_tokens = 0;
 
 	coun_tokens = _count_token(line, delim);
+	if (coun_tokens == 0)
+		return (NULL);
 	tokens = malloc(sizeof(char *) * (coun_tokens + 1));
 	if (tokens == NULL)
 		return (NULL);

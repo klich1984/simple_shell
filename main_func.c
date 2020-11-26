@@ -171,6 +171,11 @@ void start_loop(builtin *bt, char *argv, char **env)
 			continue;
 		}
 		arguments = divide_line(line, " ");
+		if (!arguments)
+		{
+			free(line);
+			continue;
+		}
 		path = trans_arguments(arguments, bt, argv, coun_loop, env);
 		if (path == NULL)
 		{
