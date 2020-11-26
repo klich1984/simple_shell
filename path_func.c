@@ -13,9 +13,7 @@ char *concat_path(char *command, char **env)
 
 	paths = divide_path("PATH", env);
 	if (paths == NULL)
-	{
-		return ("A");
-	}
+		return (NULL);
 	paths_size = size_dptr(paths);
 	if (command)
 		command_size = string_size(command);
@@ -70,7 +68,7 @@ char **divide_path(char *str, char **env)
 		return (NULL);
 	}
 	PATHS = divide_line(PATH[1], ":");
-	if (!PATHS || PATHS[0] == NULL)
+	if (!PATHS || PATHS[0] == '\0' || PATHS[0] == NULL)
 	{
 		free(PATH);
 		free(_env);
@@ -125,7 +123,7 @@ char **divide_line(char *line, char *delim)
 	int i = 0, j = 0, coun_tokens = 0;
 
 	coun_tokens = _count_token(line, delim);
-	if (coun_tokens == 0)
+	if (coun_tokens == 0 || !line)
 		return (NULL);
 	tokens = malloc(sizeof(char *) * (coun_tokens + 1));
 	if (tokens == NULL)
