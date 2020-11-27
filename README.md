@@ -5,7 +5,12 @@ It can run commands and builtins, handling errors and printing them.
 ## How to install?
 It's really simple to install this simple shell (*wink wink*), you only need to clone this **repository** and compile all the *.c* files with the version 4.8.4 or up of gcc.
 
-
+### Example:
+`gcc *.c -o hsh`
+That command would compile all the files that end in a *.c* to an executable called **hsh**
+to run the shell it's as simple as running the executable with:
+`./hsh`
+And voilá, you have the Mini Shell up and running!
 
 ## How to use it?
 It's the same as using the shell that you normally use. There's two modes on this shell **Interactive Mode** and **Non Interactive Mode**
