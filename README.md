@@ -37,6 +37,15 @@ echo hello world
 (hsh$) hello world
 ```
 
+**ps**
+```
+($) ps
+  PID TTY          TIME CMD
+10774 pts/3    00:00:01 bash
+15211 pts/3    00:00:00 hsh
+15230 pts/3    00:00:00 ps
+```
+
 **Made by:**
 *Carlos Usuga Martinez*
 *Juan Pablo Montoya*
