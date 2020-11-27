@@ -13,7 +13,7 @@ char *concat_path(char *command, char **env)
 
 	paths = divide_path("PATH", env);
 	if (paths == NULL)
-		return (NULL);
+		return ("A");
 	paths_size = size_dptr(paths);
 	if (command)
 		command_size = string_size(command);
@@ -68,7 +68,7 @@ char **divide_path(char *str, char **env)
 		return (NULL);
 	}
 	PATHS = divide_line(PATH[1], ":");
-	if (!PATHS || PATHS[0] == '\0' || PATHS[0] == NULL)
+	if (!PATHS || PATHS[0] == NULL)
 	{
 		free(PATH);
 		free(_env);
